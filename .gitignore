@@ -1,0 +1,8 @@
+leads.db
+leads.db-shm
+leads.db-wal
+node_modules/
+.env
+.DS_Store
+curated-pours-calculator-preview.html
+dist/

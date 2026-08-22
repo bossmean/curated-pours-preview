@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signature Cocktail Menu Builder | Curated Pours</title>
+<meta name="description" content="Build a signature cocktail menu for your event. Three cocktails matched to your crowd and season, plus a zero proof option, with batch quantities and a full shopping list.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FFFFFF">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Build Your Signature Cocktail Menu">
+<meta property="og:description" content="Three cocktails matched to your crowd and your season, with the batch quantities and shopping list to make them.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/poppins-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/calculator.css">
+</head>
+<body>
+<a class="skip-link" href="#calculator">Skip to the builder</a>
+
+<div class="preview-bar" id="previewBanner" hidden>
+  <div class="wrap">
+    <span class="preview-bar__tag">Preview</span>
+    <span>Working demo of the Curated Pours planning tools. Every number is live, but the forms are not connected to an inbox yet, so nothing you submit is sent or stored.</span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html" aria-label="Curated Pours, home">
+      <span class="brand__mark" aria-hidden="true">CP</span>
+      <span>
+        <span class="brand__name">Curated Pours</span>
+        <span class="brand__sub">Mobile bartending and bar service</span>
+      </span>
+    </a>
+    <nav class="tool-nav" aria-label="Planning tools">
+      <a href="index.html">Bar Calculator</a>
+      <a href="budget.html">Bar Budget</a>
+      <a href="cocktails.html" class="is-current" aria-current="page">Cocktail Menu</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap hero__inner">
+      <p class="eyebrow">Signature Cocktail Builder</p>
+      <h1>Build Your Signature Cocktail Menu</h1>
+      <p class="hero__lede">Tell us about your crowd and we will build a short menu that suits them, with the recipes and the batch quantities to make it happen.</p>
+      <div class="hero__meta">
+        <span>Three signatures and a zero proof option</span>
+        <span>Batch quantities and a shopping list</span>
+        <span>No email required to see it</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="calc" id="calculator">
+    <div class="wrap">
+      <noscript>
+        <div class="noscript">
+          <strong>This calculator needs JavaScript.</strong> Turn it on and reload the page, or email
+          <a href="mailto:hello@curatedpours.com" style="color:var(--gold-ink)">hello@curatedpours.com</a>
+          with your event details and we will put the plan together for you.
+        </div>
+      </noscript>
+
+      <div class="calc-card" id="calcCard">
+        <div class="calc-head">
+          <div class="progress-row">
+            <p class="progress-label" id="progressLabel">Step 1 of 6</p>
+            <p class="progress-hint" id="progressHint">Event type</p>
+          </div>
+          <div class="progress-track" role="progressbar" aria-labelledby="progressLabel" aria-valuemin="1" aria-valuemax="6" aria-valuenow="1">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+        <div class="calc-body">
+          <div class="step is-active" data-step="1" id="step-1" role="group" aria-labelledby="q1">
+            <h2 id="q1">What are you planning?</h2>
+            <p class="step__sub">The occasion shapes the menu as much as the flavours do.</p>
+            <div class="opts opts--2" id="eventTypeOpts"></div>
+            <p class="error" id="err-1" role="alert"></p>
+          </div>
+
+          <div class="step" data-step="2" id="step-2" role="group" aria-labelledby="q2">
+            <h2 id="q2">How many guests are you expecting?</h2>
+            <p class="step__sub">A close estimate is fine. You can adjust this later.</p>
+            <div class="field">
+              <label class="field__label" for="guestCount">Total guest count</label>
+              <div class="stepper">
+                <button type="button" class="stepper__btn" id="guestsMinus" aria-label="Decrease guest count by ten">&minus;</button>
+                <input class="input" type="number" id="guestCount" name="guestCount" inputmode="numeric"
+                       min="10" max="1000" step="1" value="100" autocomplete="off">
+                <button type="button" class="stepper__btn" id="guestsPlus" aria-label="Increase guest count by ten">+</button>
+              </div>
+              <p class="field__hint">Between 10 and 1000 guests.</p>
+            </div>
+            <div class="step__block">
+              <h3>Approximately what percentage of your guests will be drinking alcohol?</h3>
+              <div class="opts opts--3" id="drinkingPctOpts"></div>
+              <div class="slider-row">
+                <label class="sr-only" for="drinkingPctSlider">Fine tune the percentage of guests drinking alcohol</label>
+                <input class="slider" type="range" id="drinkingPctSlider" min="10" max="100" step="5" value="75">
+                <output class="slider-value" id="drinkingPctValue" for="drinkingPctSlider">75%</output>
+              </div>
+              <p class="field__hint" id="drinkingGuestsHint">That is about 75 drinking guests.</p>
+            </div>
+            <p class="error" id="err-2" role="alert"></p>
+          </div>
+
+          <div class="step" data-step="3" id="step-3" role="group" aria-labelledby="q3">
+            <h2 id="q3">How long will the bar be open?</h2>
+            <p class="step__sub">This sets how much of each drink to batch.</p>
+            <div class="opts opts--3" id="durationOpts"></div>
+            <p class="error" id="err-3" role="alert"></p>
+          </div>
+
+          <div class="step" data-step="4" id="step-4" role="group" aria-labelledby="q4">
+            <h2 id="q4">When in the year is it?</h2>
+            <p class="step__sub">Nobody wants a hot toddy in July, or a frozen daiquiri in February.</p>
+            <div class="opts opts--2" id="seasonOpts"></div>
+            <p class="error" id="err-4" role="alert"></p>
+          </div>
+
+          <div class="step" data-step="5" id="step-5" role="group" aria-labelledby="q5">
+            <h2 id="q5">What does your crowd actually like?</h2>
+            <p class="step__sub">Pick as many as apply. This is what the menu is built from.</p>
+            <div class="step__block">
+              <h3>Flavour direction</h3>
+              <p class="field__hint" style="margin-top:6px">Choose one or two.</p>
+              <div class="opts opts--wide" id="profileOpts"></div>
+            </div>
+            <div class="step__block">
+              <h3>Spirits your crowd drinks</h3>
+              <p class="field__hint" style="margin-top:6px">Choose every one you would happily buy.</p>
+              <div class="opts opts--3" id="spiritOpts"></div>
+            </div>
+            <p class="error" id="err-5" role="alert"></p>
+          </div>
+
+          <div class="step" data-step="6" id="step-6" role="group" aria-labelledby="q6">
+            <h2 id="q6">When and where is the event?</h2>
+            <p class="step__sub">We do not need the exact venue address, just enough to check availability and travel.</p>
+            <div class="field-row field-row--2">
+              <div class="field">
+                <label class="field__label" for="eventDate">Event date</label>
+                <input class="input" type="date" id="eventDate" name="eventDate" autocomplete="off">
+              </div>
+              <div class="field">
+                <label class="field__label" for="eventCity">City or location</label>
+                <input class="input" type="text" id="eventCity" name="eventCity" placeholder="Toronto, ON" autocomplete="address-level2">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field__label" for="postalCode">Postal code <span style="font-weight:400;color:var(--ink-2)">(optional)</span></label>
+              <input class="input" type="text" id="postalCode" name="postalCode" placeholder="M5V 2T6"
+                     autocomplete="postal-code" maxlength="7" style="max-width:220px">
+            </div>
+            <p class="error" id="err-6" role="alert"></p>
+          </div>
+        </div>
+        <div class="calc-foot">
+          <button type="button" class="btn btn--ghost btn--back" id="backBtn" hidden>Back</button>
+          <button type="button" class="btn btn--gold" id="nextBtn">Continue</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="results" id="results" aria-live="polite">
+    <div class="wrap">
+      <div class="results__head">
+        <p class="eyebrow">Your Menu</p>
+        <h2>Your Signature Cocktail Menu</h2>
+        <p class="results__note" id="resultsNote"></p>
+      </div>
+
+      <div class="summary">
+        <div class="summary__grid">
+          <div><p class="summary__k">Event</p><p class="summary__v" id="sumEventType">&nbsp;</p></div>
+          <div><p class="summary__k">Guests</p><p class="summary__v" id="sumGuests">&nbsp;</p></div>
+          <div><p class="summary__k">Bar open</p><p class="summary__v" id="sumDuration">&nbsp;</p></div>
+          <div><p class="summary__k">Season</p><p class="summary__v" id="sumSeason">&nbsp;</p></div>
+          <div><p class="summary__k">Cocktails to batch</p><p class="summary__v" id="sumServings">&nbsp;</p></div>
+        </div>
+      </div>
+
+      <div class="menu-grid" id="menuGrid"></div>
+
+      <div class="explain">
+        <h3>Your shopping list</h3>
+        <p class="step__sub" style="margin-top:0;margin-bottom:6px">Everything the menu above needs, for the quantities shown on each card. Bottle counts are rounded up.</p>
+        <div class="list-groups" id="shoppingList"></div>
+        <p class="explain__caveat">
+          <strong>Buy a little over, not a little under.</strong> Fresh juice, ice and syrup all get used faster
+          than the maths says on a warm night, and citrus keeps. These quantities assume the signature menu
+          covers most, not all, of what your guests drink.
+        </p>
+      </div>
+
+      <div class="convert is-shown" id="convert">
+        <p class="eyebrow eyebrow--dark">Next Step</p>
+        <h2>You have a menu. Now decide who is behind the bar making it.</h2>
+        <p class="convert__copy">We can send the full recipes and shopping list to your inbox, or Curated Pours can build this bar at your event and pour it for you.</p>
+
+        <div class="convert__actions">
+          <button type="button" class="btn btn--ghost btn--lg btn--block" id="emailPlanBtn">Email Me My Menu and Recipes</button>
+          <button type="button" class="btn btn--gold btn--lg btn--block" id="quoteBtn">Get a Curated Pours Quote</button>
+        </div>
+        <p class="convert__reassure">Your results are already on this page. Nothing above is hidden behind a form.</p>
+
+        <div class="panel" id="emailPanel">
+          <h3>Send me the menu and the recipes</h3>
+          <p class="panel__sub">Every build, the batch quantities and the full shopping list, ready to take to the store.</p>
+          <div class="panel__recap" id="emailRecap"></div>
+          <form id="emailForm" novalidate>
+            <div class="field-row field-row--2">
+              <div class="field">
+                <label class="field__label" for="ep_firstName">First name</label>
+                <input class="input" type="text" id="ep_firstName" name="firstName" autocomplete="given-name" required>
+              </div>
+              <div class="field">
+                <label class="field__label" for="ep_email">Email</label>
+                <input class="input" type="email" id="ep_email" name="email" autocomplete="email" inputmode="email" required>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field__label" for="ep_phone">Phone number <span style="font-weight:400;color:var(--ink-2)">(optional)</span></label>
+              <input class="input" type="tel" id="ep_phone" name="phone" autocomplete="tel" inputmode="tel" style="max-width:280px">
+            </div>
+            <p class="error" id="err-email" role="alert"></p>
+            <div class="form-actions">
+              <button type="submit" class="btn btn--gold btn--lg" id="emailSubmit">Send My Menu</button>
+            </div>
+            <p class="consent">We will only use this to send what you asked for and to follow up about your event. No list, no spam.</p>
+          </form>
+        </div>
+
+        <div class="panel" id="quotePanel">
+          <h3>Request a Curated Pours quote</h3>
+          <p class="panel__sub">We already have your event details. Just tell us who you are and anything else we should know.</p>
+          <div class="panel__recap" id="quoteRecap"></div>
+          <form id="quoteForm" novalidate>
+            <div class="field-row field-row--2">
+              <div class="field">
+                <label class="field__label" for="q_fullName">Full name</label>
+                <input class="input" type="text" id="q_fullName" name="fullName" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label class="field__label" for="q_email">Email</label>
+                <input class="input" type="email" id="q_email" name="email" autocomplete="email" inputmode="email" required>
+              </div>
+            </div>
+            <div class="field-row field-row--2">
+              <div class="field">
+                <label class="field__label" for="q_phone">Phone</label>
+                <input class="input" type="tel" id="q_phone" name="phone" autocomplete="tel" inputmode="tel" required>
+              </div>
+              <div class="field">
+                <label class="field__label" for="q_venue">Venue <span style="font-weight:400;color:var(--ink-2)">(if known)</span></label>
+                <input class="input" type="text" id="q_venue" name="venue" autocomplete="off">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field__label" for="q_notes">Anything else we should know?</label>
+              <textarea class="input" id="q_notes" name="notes" rows="4" placeholder="Signature cocktail ideas, venue restrictions, timing, anything at all."></textarea>
+            </div>
+            <p class="error" id="err-quote" role="alert"></p>
+            <div class="form-actions">
+              <button type="submit" class="btn btn--gold btn--lg" id="quoteSubmit">Request My Quote</button>
+            </div>
+            <p class="consent">We will get back to you with availability and pricing for your date. Requesting a quote does not commit you to anything.</p>
+          </form>
+        </div>
+
+        <div class="success" id="successBox">
+          <h3 id="successTitle"></h3>
+          <p id="successBody"></p>
+        </div>
+      </div>
+
+
+      <div style="margin-top:26px">
+        <button type="button" class="btn btn--outline-dark" id="restartBtn">Start over with different answers</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p>Curated Pours &middot; Mobile bartending and bar service</p>
+    <div class="footer-links">
+      <a href="mailto:hello@curatedpours.com">hello@curatedpours.com</a>
+      <a href="https://www.instagram.com/curatedpours" rel="noopener">@curatedpours</a>
+    </div>
+    <p class="footer-fine">
+      Estimates on this page are planning guidelines built from typical event service rates. Actual consumption
+      varies with your guests, the weather, the venue and the menu. Please serve responsibly and check your venue
+      and provincial rules on alcohol service before you buy.
+    </p>
+  </div>
+</footer>
+
+<script type="module" src="assets/js/cocktail-app.js"></script>
+</body>
+</html>
