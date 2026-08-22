@@ -1,34 +1,58 @@
-# Curated Pours Event Bar Calculator
+# Curated Pours planning tools
 
-A lead generating event bar planner. A visitor answers six short questions and
-gets a complete bar plan: total drinks, beer, wine, spirits, mixers, ice and a
-bartender recommendation. The plan is shown in full before any form appears.
-From there they can ask for the emailed shopping list or request a quote, and
-both routes carry every answer forward.
+Three lead generating calculators that share one drink model, one design
+system and one lead pipeline. Each asks six short questions, shows the whole
+result before any form appears, then offers the emailed version or a quote.
+
+**Live preview:** https://bossmean.github.io/curated-pours-preview/
+
+| Tool | Page | What it answers |
+| --- | --- | --- |
+| Event Bar Calculator | `index.html` | How much alcohol, mixers, ice and staff do I need? |
+| Bar Budget Calculator | `budget.html` | What will the drinks actually cost, and per guest? |
+| Signature Cocktail Menu Builder | `cocktails.html` | What should we serve, and how do we make it? |
+
+The budget tool and the menu builder both call the bar calculator's engine for
+drink volume, so the three can never disagree about how much a crowd drinks.
 
 ## What is in the box
 
 ```
 curated-pours/
   calculator/                     the front end, deployable on its own
-    index.html
-    assets/css/calculator.css
+    index.html                    Event Bar Calculator
+    budget.html                   Bar Budget Calculator
+    cocktails.html                Signature Cocktail Menu Builder
+    assets/css/calculator.css     one stylesheet for all three
     assets/fonts/                 self hosted Poppins and EB Garamond, latin subset
-    assets/img/favicon.svg
     assets/js/
-      config.js                   every planning assumption and question option
-      calculator.js               the calculation engine, pure and testable
-      scoring.js                  internal lead intent scoring
-      analytics.js                tracking abstraction
-      lead-store.js               storage abstraction with offline fallback
-      app.js                      UI controller
+      shared
+        ui.js                     formatting, option buttons, the step machine
+        lead-forms.js             both conversion panels and the lead record
+        lead-store.js             storage abstraction with offline fallback
+        scoring.js                internal lead intent scoring
+        analytics.js              tracking abstraction
+      bar calculator
+        config.js                 every planning assumption and question option
+        calculator.js             the drink engine, pure and testable
+        app.js
+      bar budget
+        budget-config.js          every price assumption
+        budget.js                 pricing layer over the drink engine
+        budget-app.js
+      cocktail menu
+        cocktail-config.js        the recipe library and matching rules
+        cocktails.js              menu selection and batching
+        cocktail-app.js
   server/
     server.mjs                    lead API and static host, no npm dependencies
     storage/
       index.mjs                   adapter registry
       fields.mjs                  the canonical lead field list
       sqlite-adapter.mjs          SQLite via node:sqlite
-  tests/calculator.test.mjs       24 scenario and rule tests
+  tests/                          45 scenario and rule tests
+  build-preview.mjs               bundles one tool into a single .html file
+  deploy-pages.mjs                builds the static site for GitHub Pages
 ```
 
 ## Running it
@@ -45,7 +69,9 @@ Then open:
 
 | What | Where |
 | --- | --- |
-| The calculator | http://localhost:4173/ |
+| Event Bar Calculator | http://localhost:4173/ |
+| Bar Budget Calculator | http://localhost:4173/budget.html |
+| Cocktail Menu Builder | http://localhost:4173/cocktails.html |
 | Internal leads view | http://localhost:4173/admin?token=devtoken |
 | Leads as JSON | http://localhost:4173/api/leads?token=devtoken |
 | Leads as CSV | http://localhost:4173/api/leads.csv?token=devtoken |
@@ -63,6 +89,21 @@ Run the tests with `npm test`.
 
 See `.env.example`.
 
+## Publishing
+
+```bash
+node deploy-pages.mjs dist          # static site, preview mode
+node build-preview.mjs out.html     # one tool as a single self contained file
+```
+
+Both default to **preview mode**: the tools work in full, a notice sits at the
+top of the page, and anyone who submits a form is told plainly that nothing was
+sent. That is the honest default for a host with no backend. Pass `--live` with
+`LEAD_ENDPOINT` set once the forms have somewhere real to go.
+
+The GitHub Pages preview is served from the `gh-pages` branch of
+`bossmean/curated-pours-preview`, built by `deploy-pages.mjs`.
+
 ## Changing the planning assumptions
 
 Everything lives in `calculator/assets/js/config.js`. Nothing else in the
@@ -79,6 +120,16 @@ codebase hard codes a rate. The pieces you are most likely to touch:
 
 The mix percentages and the mixer shares must each add to 1. There is a test
 that fails if they do not.
+
+Prices live in `budget-config.js`. **They are starting estimates, not quoted
+retail.** They are shown to the visitor and editable on the results screen, so
+the tool never presents them as fact, but set the defaults from real shelf
+prices in the province you serve before this goes live.
+
+Cocktails live in `cocktail-config.js`. Every build is a standard bar spec in
+fluid ounces. Add a drink by appending to `RECIPES` with the same shape and it
+enters the matching pool immediately. Tests check that every combination of
+season, flavour and spirit still produces a full menu.
 
 ## How the numbers are reached
 
@@ -160,6 +211,8 @@ browser console while testing.
 
 ## Before this goes live
 
+- Set the bottle prices in `budget-config.js` from real shelf prices. The
+  current defaults are placeholders and must not ship as though they were checked.
 - Add the real Curated Pours phone number and confirm the contact details in the
   header and footer. The phone number on the brand assets is a design
   placeholder and has deliberately been left off the page.

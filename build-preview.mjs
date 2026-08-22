@@ -31,7 +31,8 @@ const titleArg = args.find(a => a.startsWith('--title='));
 const title = titleArg ? titleArg.slice('--title='.length) : null;
 
 /* Dependency order. A module may only use what is defined above it. */
-const MODULES = ['config.js', 'calculator.js', 'scoring.js', 'analytics.js', 'lead-store.js', 'app.js'];
+const MODULES = ['config.js', 'calculator.js', 'scoring.js', 'analytics.js',
+                 'lead-store.js', 'ui.js', 'lead-forms.js', 'app.js'];
 
 const read = rel => readFile(path.join(SRC, rel), 'utf8');
 
@@ -97,6 +98,12 @@ html = html
     `<script>\n${runtimeConfig}\n</script>\n<script type="module">\n${chunks.join('\n\n')}\n</script>`);
 
 if (title) html = html.replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`);
+
+// A single file has no sibling pages, so the tool nav would be three dead
+// links. Point it at the hosted site instead.
+const SITE = process.env.SITE_URL || 'https://bossmean.github.io/curated-pours-preview';
+html = html.replace(/<nav class="tool-nav"[\s\S]*?<\/nav>/,
+  `<a class="header-contact" href="${SITE}">See all three tools</a>`);
 
 // The favicon is a local file, so inline it too.
 const favicon = await read('assets/img/favicon.svg');
